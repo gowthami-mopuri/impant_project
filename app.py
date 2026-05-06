@@ -46,6 +46,22 @@ def predict():
         "confidence": confidence,
         "top_factors": top_factors
     })
+    @app.route('/chat', methods=['POST'])
+def chat():
+    data = request.json
+
+    question = data.get("question")
+    prediction = data.get("prediction")
+    factors = data.get("factors")
+
+    if "why" in question.lower():
+        reply = f"The success is {prediction.lower()} mainly due to {', '.join(factors)}."
+    elif "improve" in question.lower():
+        reply = "Improving bone density and avoiding risk factors like smoking can increase success."
+    else:
+        reply = "This prediction is based on clinical factors like bone condition and patient health."
+
+    return jsonify({"reply": reply})
 
 if __name__ == "__main__":
     app.run(debug=True)
